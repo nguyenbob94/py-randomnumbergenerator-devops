@@ -29,8 +29,5 @@ steps:
     python -m pip install --upgrade pip
     pip install -r requirements.txt
     pip install pyinstaller
-  displayName: 'Install dependencies'
-
-- script: |
     pyinstall --onefile .\numberrangegenerator.py
-  displayName: 'pyinstall'
+  displayName: 'Do Python magic'
