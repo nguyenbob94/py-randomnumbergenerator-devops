@@ -29,5 +29,5 @@ steps:
     python -m pip install --upgrade pip
     pip install -r requirements.txt
     pip install pyinstaller
-    pyinstall --onefile .\numberrangegenerator.py
+    pyinstall --onefile ./numberrangegenerator.py
   displayName: 'Do Python magic'
