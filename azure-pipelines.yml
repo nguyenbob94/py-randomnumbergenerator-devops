@@ -29,5 +29,5 @@ steps:
     python -m pip install --upgrade pip
     pip install -r requirements.txt
     pip install pyinstaller
-    which pyinstaller
+    /opt/hostedtoolcache/Python/3.6.15/x64/bin/pyinstaller --onefile ./main.py
   displayName: 'Do Python magic'
