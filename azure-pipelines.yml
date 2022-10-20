@@ -1,6 +1,3 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
@@ -8,27 +5,37 @@ trigger:
 
 pool:
   vmImage: windows-latest
-strategy:
-  matrix:
-    Python27:
-      python.version: '2.7'
-    Python35:
-      python.version: '3.5'
-    Python36:
-      python.version: '3.6'
-    Python37:
-      python.version: '3.7'
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
-- script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-    pip install pyinstaller
-    pyinstaller --onefile .\main.py
-  displayName: 'Do Python magic'
-- publish: $(System.DefaultWorkingDirectory)/dist/main.exe
-  artifact: RandomNumberGenerator.exe
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6'
+          addToPath: true
+          architecture: 'x64'
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+          pyinstaller --onefile .\main.py
+        displayName: 'Build application package'
+
+- stage: Test
+  jobs:
+  - job: Test
+    steps:
+    - script: |
+        python.exe $(System.DefaultWorkingDirectory)/dist/main.exe 10 20
+      displayName: 'Test application'
+      condition: 
+
+- stage: PublishArtifact
+  jobs:
+  - job: PublishArtifact
+    steps:
+    - publish: $(System.DefaultWorkingDirectory)/dist/main.exe
+      artifact: RandomNumberGenerator.exe
+    displayName: 'Create .exe artifact for release'
