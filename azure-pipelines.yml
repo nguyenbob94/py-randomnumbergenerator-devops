@@ -20,22 +20,11 @@ stages:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
-          pyinstaller --onefile .\main.py
+          pyinstaller --onefile .\RandomNumberGeneratorApp.py
         displayName: 'Build application package'
-
-- stage: Test
-  jobs:
-  - job: Test
-    steps:
-    - script: |
-        python.exe $(System.DefaultWorkingDirectory)/dist/main.exe 10 20
-      displayName: 'Test application'
-      condition: 
-
-- stage: PublishArtifact
-  jobs:
-  - job: PublishArtifact
-    steps:
-    - publish: $(System.DefaultWorkingDirectory)/dist/main.exe
-      artifact: RandomNumberGenerator.exe
-    displayName: 'Create .exe artifact for release'
+      - script: |
+          python.exe $(System.DefaultWorkingDirectory)/dist/RandomNumberGeneratorApp.exe 10 20
+        displayName: 'Test application'
+      - publish: $(System.DefaultWorkingDirectory)/dist/RandomNumberGeneratorApp.exe
+        artifact: RandomNumberGeneratorApp
+        displayName: 'Create .exe artifact for release'
