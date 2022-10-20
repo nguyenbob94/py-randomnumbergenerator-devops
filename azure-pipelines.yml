@@ -9,7 +9,7 @@ pool:
 stages:
 - stage: Build
   jobs:
-  - job: Build
+  - job: BuildArtifact
     steps:
       - task: UsePythonVersion@0
         inputs:
@@ -22,9 +22,6 @@ stages:
           pip install pyinstaller
           pyinstaller --onefile .\RandomNumberGeneratorApp.py
         displayName: 'Build application package'
-      - script: |
-          python.exe $(System.DefaultWorkingDirectory)/dist/RandomNumberGeneratorApp.exe 10 20
-        displayName: 'Test application'
       - publish: $(System.DefaultWorkingDirectory)/dist/RandomNumberGeneratorApp.exe
         artifact: RandomNumberGeneratorApp
         displayName: 'Create .exe artifact for release'
