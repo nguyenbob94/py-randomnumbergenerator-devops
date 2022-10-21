@@ -40,4 +40,4 @@ while True:
   start = None
   end = None
 
-input("Press Enter to continue...")
+input("Press Enter to continue..")
